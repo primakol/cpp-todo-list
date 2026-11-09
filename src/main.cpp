@@ -1,3 +1,7 @@
-//
-// Created by HP on 09.11.2026.
-//
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    return 0;
+}
