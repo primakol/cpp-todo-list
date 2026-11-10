@@ -1,0 +1,50 @@
+[
+{
+  "directory": "D:/Planner1/cmake-build-debug",
+  "command": "C:\\Users\\lisa\\AppData\\Local\\Programs\\CLION2~1.2\\bin\\mingw\\bin\\C__~1.EXE -DGLFW_DLL -ID:/Planner1 -g -std=gnu++17 -fdiagnostics-color=always -o CMakeFiles\\Planner1.dir\\Planner1.cpp.obj -c D:\\Planner1\\Planner1.cpp",
+  "file": "D:/Planner1/Planner1.cpp",
+  "output": "D:/Planner1/cmake-build-debug/CMakeFiles/Planner1.dir/Planner1.cpp.obj"
+},
+{
+  "directory": "D:/Planner1/cmake-build-debug",
+  "command": "C:\\Users\\lisa\\AppData\\Local\\Programs\\CLION2~1.2\\bin\\mingw\\bin\\C__~1.EXE -DGLFW_DLL -ID:/Planner1 -g -std=gnu++17 -fdiagnostics-color=always -o CMakeFiles\\Planner1.dir\\imgui.cpp.obj -c D:\\Planner1\\imgui.cpp",
+  "file": "D:/Planner1/imgui.cpp",
+  "output": "D:/Planner1/cmake-build-debug/CMakeFiles/Planner1.dir/imgui.cpp.obj"
+},
+{
+  "directory": "D:/Planner1/cmake-build-debug",
+  "command": "C:\\Users\\lisa\\AppData\\Local\\Programs\\CLION2~1.2\\bin\\mingw\\bin\\C__~1.EXE -DGLFW_DLL -ID:/Planner1 -g -std=gnu++17 -fdiagnostics-color=always -o CMakeFiles\\Planner1.dir\\imgui_demo.cpp.obj -c D:\\Planner1\\imgui_demo.cpp",
+  "file": "D:/Planner1/imgui_demo.cpp",
+  "output": "D:/Planner1/cmake-build-debug/CMakeFiles/Planner1.dir/imgui_demo.cpp.obj"
+},
+{
+  "directory": "D:/Planner1/cmake-build-debug",
+  "command": "C:\\Users\\lisa\\AppData\\Local\\Programs\\CLION2~1.2\\bin\\mingw\\bin\\C__~1.EXE -DGLFW_DLL -ID:/Planner1 -g -std=gnu++17 -fdiagnostics-color=always -o CMakeFiles\\Planner1.dir\\imgui_draw.cpp.obj -c D:\\Planner1\\imgui_draw.cpp",
+  "file": "D:/Planner1/imgui_draw.cpp",
+  "output": "D:/Planner1/cmake-build-debug/CMakeFiles/Planner1.dir/imgui_draw.cpp.obj"
+},
+{
+  "directory": "D:/Planner1/cmake-build-debug",
+  "command": "C:\\Users\\lisa\\AppData\\Local\\Programs\\CLION2~1.2\\bin\\mingw\\bin\\C__~1.EXE -DGLFW_DLL -ID:/Planner1 -g -std=gnu++17 -fdiagnostics-color=always -o CMakeFiles\\Planner1.dir\\imgui_tables.cpp.obj -c D:\\Planner1\\imgui_tables.cpp",
+  "file": "D:/Planner1/imgui_tables.cpp",
+  "output": "D:/Planner1/cmake-build-debug/CMakeFiles/Planner1.dir/imgui_tables.cpp.obj"
+},
+{
+  "directory": "D:/Planner1/cmake-build-debug",
+  "command": "C:\\Users\\lisa\\AppData\\Local\\Programs\\CLION2~1.2\\bin\\mingw\\bin\\C__~1.EXE -DGLFW_DLL -ID:/Planner1 -g -std=gnu++17 -fdiagnostics-color=always -o CMakeFiles\\Planner1.dir\\imgui_widgets.cpp.obj -c D:\\Planner1\\imgui_widgets.cpp",
+  "file": "D:/Planner1/imgui_widgets.cpp",
+  "output": "D:/Planner1/cmake-build-debug/CMakeFiles/Planner1.dir/imgui_widgets.cpp.obj"
+},
+{
+  "directory": "D:/Planner1/cmake-build-debug",
+  "command": "C:\\Users\\lisa\\AppData\\Local\\Programs\\CLION2~1.2\\bin\\mingw\\bin\\C__~1.EXE -DGLFW_DLL -ID:/Planner1 -g -std=gnu++17 -fdiagnostics-color=always -o CMakeFiles\\Planner1.dir\\imgui_impl_glfw.cpp.obj -c D:\\Planner1\\imgui_impl_glfw.cpp",
+  "file": "D:/Planner1/imgui_impl_glfw.cpp",
+  "output": "D:/Planner1/cmake-build-debug/CMakeFiles/Planner1.dir/imgui_impl_glfw.cpp.obj"
+},
+{
+  "directory": "D:/Planner1/cmake-build-debug",
+  "command": "C:\\Users\\lisa\\AppData\\Local\\Programs\\CLION2~1.2\\bin\\mingw\\bin\\C__~1.EXE -DGLFW_DLL -ID:/Planner1 -g -std=gnu++17 -fdiagnostics-color=always -o CMakeFiles\\Planner1.dir\\imgui_impl_opengl3.cpp.obj -c D:\\Planner1\\imgui_impl_opengl3.cpp",
+  "file": "D:/Planner1/imgui_impl_opengl3.cpp",
+  "output": "D:/Planner1/cmake-build-debug/CMakeFiles/Planner1.dir/imgui_impl_opengl3.cpp.obj"
+}
+]
