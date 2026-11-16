@@ -91,8 +91,10 @@
                                         <input type="time" id="day-task-time">
                                     </label>
                                     <select id="day-task-priority" class="mini-pill-select">
-                                        <option value="none">Set priority</option>
-                                        <option value="High">High priority</option>
+                                            <option value="none">No priority</option>
+                                            <option value="Low">Low priority</option>
+                                            <option value="Medium">Medium priority</option>
+                                            <option value="High">High priority</option>
                                     </select>
                                     <select id="day-task-category" class="mini-pill-select category-dropdown"></select>
                                     <button type="button" class="mini-pill-btn" onclick="promptNewCategory()">+ Group</button>
@@ -207,7 +209,9 @@
                     <div>
                         <label class="modal-label">Priority</label>
                         <select id="edit-task-priority" class="modal-input">
-                            <option value="none">Normal</option>
+                            <option value="none">No priority</option>
+                            <option value="Low">Low priority</option>
+                            <option value="Medium">Medium priority</option>
                             <option value="High">High priority</option>
                         </select>
                     </div>

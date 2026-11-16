@@ -19,8 +19,8 @@ let categories = JSON.parse(localStorage.getItem('demak_categories')) || default
 // Початкові завдання прив'язані до сьогоднішньої дати
 const initialTasks = [
     { id: 1, title: "Finalize the website proposal", subtitle: "Review the scope and send it to the client", category: "Work", date: todayISO, time: "10:00", priority: "High", completed: false },
-    { id: 2, title: "Plan next week's priorities", subtitle: "Make space for the big ideas", category: "Work", date: todayISO, time: "11:30", priority: "none", completed: false },
-    { id: 3, title: "Read 20 pages", subtitle: "Atomic Habits - Chapter 4", category: "Learning", date: todayISO, time: "13:00", priority: "none", completed: false },
+    { id: 2, title: "Plan next week's priorities", subtitle: "Make space for the big ideas", category: "Work", date: todayISO, time: "11:30", priority: "Medium", completed: false },
+    { id: 3, title: "Read 20 pages", subtitle: "Atomic Habits - Chapter 4", category: "Learning", date: todayISO, time: "13:00", priority: "Low", completed: false },
     { id: 4, title: "Book a dentist appointment", subtitle: "A little life admin", category: "Personal", date: todayISO, time: "16:00", priority: "none", completed: false },
     { id: 5, title: "Morning stretch & a glass of water", subtitle: "A good start to a good day", category: "Personal", date: todayISO, time: "08:00", priority: "none", completed: true }
 ];
@@ -34,14 +34,14 @@ function saveState() {
     localStorage.setItem('demak_categories', JSON.stringify(categories));
 }
 
-// 5. Актуальна дата зверху сторінки
+// Актуальна дата зверху сторінки
 function initHeaderDate() {
     const options = { weekday: 'long', month: 'long', day: 'numeric' };
     document.getElementById('current-date-eyebrow').textContent = realToday.toLocaleDateString('en-US', options).toUpperCase();
     document.getElementById('day-task-date').value = todayISO;
 }
 
-// 7. Спливаюче повідомлення з китом
+// Спливаюче повідомлення з китом
 function showWhaleToast(taskTitle) {
     const toast = document.getElementById('whale-toast');
     document.getElementById('toast-message').textContent = `"${taskTitle}" added!`;
@@ -53,7 +53,7 @@ function showWhaleToast(taskTitle) {
     }, 3000);
 }
 
-// 3. Додавання власної групи
+// Додавання власної групи
 window.promptNewCategory = function() {
     const name = prompt("Enter new group name (e.g. University, Health):");
     if (!name) return;
@@ -66,14 +66,12 @@ window.promptNewCategory = function() {
 };
 
 function renderCategoriesUI() {
-    // Оновлюємо випадаючі списки в формах
     document.querySelectorAll('.category-dropdown').forEach(select => {
         const currentVal = select.value;
         select.innerHTML = categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
         if (categories.includes(currentVal)) select.value = currentVal;
     });
 
-    // Оновлюємо список зліва на вкладці My tasks
     const listEl = document.getElementById('custom-categories-list');
     listEl.innerHTML = categories.map(cat => {
         const count = tasks.filter(t => t.category === cat).length;
@@ -86,7 +84,7 @@ function renderCategoriesUI() {
     }).join('');
 }
 
-// 4. Перемикання фільтрів на сторінці My tasks
+// Перемикання фільтрів на сторінці My tasks
 window.setTaskFilter = function(type, value, element) {
     myTasksFilter = { type, value };
     document.querySelectorAll('#view-mytasks .filter-item').forEach(el => el.classList.remove('active'));
@@ -109,7 +107,7 @@ window.switchView = function(view) {
     renderAll();
 };
 
-// 1. Повноцінний календар із перемиканням місяців
+// Календар із перемиканням місяців
 window.changeMonth = function(delta) {
     calViewMonth += delta;
     if (calViewMonth < 0) {
@@ -144,7 +142,6 @@ function renderCalendar() {
     const lastDay = new Date(calViewYear, calViewMonth + 1, 0);
     const daysInMonth = lastDay.getDate();
 
-    // Зсув під понеділок (0 = Пн ... 6 = Нд)
     let startOffset = firstDay.getDay() - 1;
     if (startOffset < 0) startOffset = 6;
 
@@ -173,7 +170,7 @@ function renderCalendar() {
     document.getElementById('calendar-grid').innerHTML = html;
 }
 
-// 2. Меню на 3 крапки: Редагувати або Видалити
+// Меню на 3 крапки: Редагувати або Видалити
 window.toggleMenu = function(id, event) {
     event.stopPropagation();
     document.querySelectorAll('.dropdown-menu').forEach(m => {
@@ -196,7 +193,7 @@ window.openEditModal = function(id) {
     document.getElementById('edit-task-date').value = task.date || todayISO;
     document.getElementById('edit-task-time').value = task.time || '';
     document.getElementById('edit-task-category').value = task.category;
-    document.getElementById('edit-task-priority').value = task.priority;
+    document.getElementById('edit-task-priority').value = task.priority || 'none';
     document.getElementById('edit-modal').style.display = 'flex';
 };
 
@@ -227,8 +224,15 @@ window.toggleTask = function(id) {
     renderAll();
 };
 
+// Перемикання пріоритетів по колу (None -> Low -> Medium -> High)
 window.toggleFlag = function(id) {
-    tasks = tasks.map(t => t.id === id ? { ...t, priority: t.priority === 'High' ? 'none' : 'High' } : t);
+    const order = ['none', 'Low', 'Medium', 'High'];
+    tasks = tasks.map(t => {
+        if (t.id !== id) return t;
+        const currentIdx = order.indexOf(t.priority || 'none');
+        const nextPriority = order[(currentIdx + 1) % order.length];
+        return { ...t, priority: nextPriority };
+    });
     saveState();
     renderAll();
 };
@@ -241,17 +245,23 @@ window.deleteTask = function(id) {
 
 function createTaskRowHTML(t, showDate = false) {
     const timeDisplay = showDate ? `${t.date} ${t.time || ''}` : (t.time || 'No time');
+    const prio = t.priority || 'none';
+    const flagClass = prio !== 'none' ? `priority-${prio.toLowerCase()}` : '';
+    const prioBadge = prio !== 'none'
+        ? `<span class="prio-pill ${prio.toLowerCase()}">${prio}</span>`
+        : '';
+
     return `
         <div class="task-item-row ${t.completed ? 'completed' : ''}">
             <input type="checkbox" class="task-checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTask(${t.id})">
             <div class="task-texts">
-                <h4>${t.title}</h4>
+                <h4>${t.title} ${prioBadge}</h4>
                 <p>${t.subtitle || 'Planned focus task'}</p>
             </div>
             <span class="cat-badge">${t.category}</span>
             <span class="task-time-label">${timeDisplay}</span>
             <div class="actions-wrap">
-                <button class="flag-btn ${t.priority === 'High' ? 'flagged' : ''}" onclick="toggleFlag(${t.id})" title="Flag">⚑</button>
+                <button class="flag-btn ${flagClass}" onclick="toggleFlag(${t.id})" title="Priority: ${prio} (click to change)">⚑</button>
                 <button class="dots-btn" onclick="toggleMenu(${t.id}, event)">•••</button>
                 <div class="dropdown-menu" id="menu-${t.id}">
                     <button type="button" onclick="openEditModal(${t.id})">✏️ Edit</button>
@@ -321,11 +331,11 @@ function renderMyDayView() {
 
 function renderAllTasksView() {
     document.getElementById('count-all').textContent = tasks.length;
-    document.getElementById('count-flagged').textContent = tasks.filter(t => t.priority === 'High').length;
+    document.getElementById('count-flagged').textContent = tasks.filter(t => t.priority && t.priority !== 'none').length;
     document.getElementById('count-completed').textContent = tasks.filter(t => t.completed).length;
 
     const filtered = tasks.filter(t => {
-        if (myTasksFilter.type === 'flagged') return t.priority === 'High';
+        if (myTasksFilter.type === 'flagged') return t.priority && t.priority !== 'none';
         if (myTasksFilter.type === 'completed') return t.completed;
         if (myTasksFilter.type === 'category') return t.category === myTasksFilter.value;
         return true;

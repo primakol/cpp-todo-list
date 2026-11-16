@@ -436,8 +436,39 @@ body {
     border-radius: 6px;
 }
 
-.flag-btn.flagged {
-    color: var(--accent-purple);
+.flag-btn.priority-low {
+    color: #9D98BC;
+}
+
+.flag-btn.priority-medium {
+    color: #7E57C2;
+}
+
+.flag-btn.priority-high {
+    color: #462683;
+    transform: scale(1.1);
+}
+
+.prio-pill {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 6px;
+}
+
+.prio-pill.low {
+    background-color: #F0EFF7;
+    color: #7C7899;
+}
+
+.prio-pill.medium {
+    background-color: #EAE4FA;
+    color: #6B46C1;
+}
+
+.prio-pill.high {
+    background-color: #462683;
+    color: #FFFFFF;
 }
 
 .dots-btn:hover {
