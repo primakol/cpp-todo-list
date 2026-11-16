@@ -14,7 +14,7 @@ let calViewMonth = realToday.getMonth();
 
 // Категорії користувача
 const defaultCategories = ["Work", "Personal", "Learning"];
-let categories = JSON.parse(localStorage.getItem('demak_categories')) || defaultCategories;
+let categories = JSON.parse(localStorage.getItem('demak_categories')) || [...defaultCategories];
 
 // Початкові завдання прив'язані до сьогоднішньої дати
 const initialTasks = [
@@ -65,6 +65,25 @@ window.promptNewCategory = function() {
     }
 };
 
+// Видалення власної групи
+window.deleteCategory = function(catName, event) {
+    event.stopPropagation();
+    if (!confirm(`Delete group "${catName}"? Tasks inside will move to Personal.`)) return;
+
+    categories = categories.filter(c => c !== catName);
+    tasks = tasks.map(t => t.category === catName ? { ...t, category: 'Personal' } : t);
+
+    if (myTasksFilter.type === 'category' && myTasksFilter.value === catName) {
+        myTasksFilter = { type: 'all', value: null };
+        document.getElementById('active-filter-label').textContent = 'All tasks';
+        const firstFilter = document.querySelector('#overview-filter-list .filter-item');
+        if (firstFilter) firstFilter.classList.add('active');
+    }
+
+    saveState();
+    renderAll();
+};
+
 function renderCategoriesUI() {
     document.querySelectorAll('.category-dropdown').forEach(select => {
         const currentVal = select.value;
@@ -76,9 +95,18 @@ function renderCategoriesUI() {
     listEl.innerHTML = categories.map(cat => {
         const count = tasks.filter(t => t.category === cat).length;
         const isActive = myTasksFilter.type === 'category' && myTasksFilter.value === cat ? 'active' : '';
+        const isCustom = !defaultCategories.includes(cat);
+        const deleteBtn = isCustom
+            ? `<button type="button" class="del-cat-btn" onclick="deleteCategory('${cat}', event)" title="Delete group">✕</button>`
+            : '';
+
         return `
             <li class="filter-item ${isActive}" onclick="setTaskFilter('category', '${cat}', this)">
-                <span>${cat}</span><span>${count}</span>
+                <span>${cat}</span>
+                <span class="cat-right-side">
+                    <span>${count}</span>
+                    ${deleteBtn}
+                </span>
             </li>
         `;
     }).join('');
