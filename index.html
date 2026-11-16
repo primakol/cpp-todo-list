@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demak • Daily dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="topbar">
+        <nav class="nav-tabs">
+            <button class="nav-btn active" id="tab-myday" onclick="switchView('myday')">My day</button>
+            <button class="nav-btn" id="tab-mytasks" onclick="switchView('mytasks')">My tasks</button>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- ==================== ЕКРАН 1: MY DAY ==================== -->
+        <div id="view-myday">
+            <section class="hero">
+                <div>
+                    <p class="eyebrow" id="current-date-eyebrow">TODAY</p>
+                    <h1>My day</h1>
+                    <p class="subtitle">Make room for what matters. One task at a time.</p>
+                </div>
+                <div class="whale-brand">
+                    <svg width="155" height="92" viewBox="0 0 180 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M25 62C25 38 48 22 80 22C112 22 132 42 146 38C154 35 162 24 168 26C172 28 164 42 158 48C166 52 174 62 170 66C165 70 152 62 144 58C134 78 110 90 78 90C46 90 25 80 25 62Z" fill="#462683"/>
+                        <path d="M26 68C38 82 65 89 96 87C115 86 130 78 139 67C118 76 74 78 26 68Z" fill="#DCD6F7"/>
+                        <circle cx="46" cy="54" r="3.5" fill="#FFFFFF"/>
+                        <path d="M36 66C41 70 49 70 54 66" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M74 64C84 64 95 72 92 78C89 83 75 76 68 68C66 65 70 64 74 64Z" fill="#A69AD8"/>
+                        <path d="M58 16C56 10 52 7 50 5" stroke="#B8A9E6" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M66 15C68 9 72 6 75 4" stroke="#B8A9E6" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                    <span class="brand-wordmark">demak</span>
+                </div>
+            </section>
+
+            <div class="dashboard-grid">
+                <div class="dash-left">
+                    <div class="top-stats-row">
+                        <div class="card progress-card">
+                            <h3>Today's progress</h3>
+                            <div class="progress-body">
+                                <div class="donut-chart" id="progress-ring">
+                                    <span id="progress-percent">0%</span>
+                                </div>
+                                <div class="progress-details">
+                                    <div class="progress-fraction"><strong id="progress-done">0</strong> of <strong id="progress-total">0</strong></div>
+                                    <div class="progress-label">tasks complete</div>
+                                    <div class="progress-rem"><span class="dot-sm"></span><span id="progress-remaining">0</span> remaining</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card rhythm-card">
+                            <div class="rhythm-header">
+                                <div>
+                                    <h3>Your rhythm</h3>
+                                    <span class="rhythm-sub">tasks completed</span>
+                                </div>
+                                <span class="rhythm-period">Last 7 days</span>
+                            </div>
+                            <div class="rhythm-chart" id="rhythm-bars"></div>
+                        </div>
+                    </div>
+
+                    <div class="card today-tasks-card">
+                        <div class="card-title-row">
+                            <h3 id="tasks-section-title">Today's tasks</h3>
+                            <span class="muted-count" id="today-tasks-count">0 tasks</span>
+                        </div>
+
+                        <form class="inline-add-box" id="day-task-form">
+                            <div class="input-pair">
+                                <input type="text" id="day-task-title" placeholder="Add a task you want to focus on..." required>
+                                <input type="text" id="day-task-subtitle" class="sub-input" placeholder="Optional note / description...">
+                            </div>
+                            <div class="inline-controls">
+                                <div class="select-pills">
+                                    <label class="picker-pill" title="Choose deadline date">
+                                        <span>📅</span>
+                                        <input type="date" id="day-task-date">
+                                    </label>
+                                    <label class="picker-pill" title="Choose deadline time">
+                                        <span>⏰</span>
+                                        <input type="time" id="day-task-time">
+                                    </label>
+                                    <select id="day-task-priority" class="mini-pill-select">
+                                        <option value="none">Set priority</option>
+                                        <option value="High">High priority</option>
+                                    </select>
+                                    <select id="day-task-category" class="mini-pill-select category-dropdown"></select>
+                                    <button type="button" class="mini-pill-btn" onclick="promptNewCategory()">+ Group</button>
+                                </div>
+                                <button type="submit" class="btn-add">+ Add task</button>
+                            </div>
+                        </form>
+
+                        <div id="day-tasks-list" class="clean-task-list"></div>
+                    </div>
+                </div>
+
+                <!-- Права колонка -->
+                <div class="dash-right">
+                    <div class="card calendar-card">
+                        <div class="cal-header">
+                            <h3 id="cal-month-title">November 2026</h3>
+                            <div class="cal-nav">
+                                <button type="button" class="today-pill" onclick="goToToday()">Today</button>
+                                <button type="button" class="arrow-btn" onclick="changeMonth(-1)">&lsaquo;</button>
+                                <button type="button" class="arrow-btn" onclick="changeMonth(1)">&rsaquo;</button>
+                            </div>
+                        </div>
+                        <div class="cal-weekdays">
+                            <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+                        </div>
+                        <div class="cal-days" id="calendar-grid"></div>
+                        <div class="cal-legend">
+                            <span class="dot-sm"></span> Days with planned tasks
+                        </div>
+                    </div>
+
+                    <div class="card schedule-card">
+                        <h3 id="schedule-date-title">Schedule</h3>
+                        <div class="schedule-list" id="schedule-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== ЕКРАН 2: MY TASKS ==================== -->
+        <div id="view-mytasks" style="display: none;">
+            <section class="hero">
+                <div>
+                    <p class="eyebrow">YOUR TASK SPACE</p>
+                    <h1>My tasks</h1>
+                    <p class="subtitle">All your plans, in one calm place.</p>
+                </div>
+            </section>
+            <div class="tasks-overview-grid">
+                <aside class="sidebar">
+                    <div class="card">
+                        <h3>Overview</h3>
+                        <ul class="filter-list" id="overview-filter-list">
+                            <li class="filter-item active" data-filter="all" onclick="setTaskFilter('all', null, this)">
+                                <span>All tasks</span><span id="count-all">0</span>
+                            </li>
+                            <li class="filter-item" data-filter="flagged" onclick="setTaskFilter('flagged', null, this)">
+                                <span>Flagged</span><span id="count-flagged">0</span>
+                            </li>
+                            <li class="filter-item" data-filter="completed" onclick="setTaskFilter('completed', null, this)">
+                                <span>Completed</span><span id="count-completed">0</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="list-header-row">
+                            <h3>My lists</h3>
+                            <button type="button" class="add-list-sm" onclick="promptNewCategory()">+ New</button>
+                        </div>
+                        <ul class="filter-list" id="custom-categories-list"></ul>
+                    </div>
+                </aside>
+                <div class="card all-tasks-table">
+                    <div class="table-head-bar">
+                        <span id="active-filter-label">All tasks</span>
+                    </div>
+                    <div id="all-tasks-list" class="clean-task-list"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальне вікно для редагування завдання -->
+    <div class="modal-backdrop" id="edit-modal" style="display: none;">
+        <div class="modal-card">
+            <h3>Edit task</h3>
+            <form id="edit-task-form">
+                <input type="hidden" id="edit-task-id">
+                <label class="modal-label">Title</label>
+                <input type="text" id="edit-task-title" class="modal-input" required>
+
+                <label class="modal-label">Description</label>
+                <input type="text" id="edit-task-subtitle" class="modal-input">
+
+                <div class="modal-row">
+                    <div>
+                        <label class="modal-label">Date</label>
+                        <input type="date" id="edit-task-date" class="modal-input">
+                    </div>
+                    <div>
+                        <label class="modal-label">Time</label>
+                        <input type="time" id="edit-task-time" class="modal-input">
+                    </div>
+                </div>
+
+                <div class="modal-row">
+                    <div>
+                        <label class="modal-label">Group</label>
+                        <select id="edit-task-category" class="modal-input category-dropdown"></select>
+                    </div>
+                    <div>
+                        <label class="modal-label">Priority</label>
+                        <select id="edit-task-priority" class="modal-input">
+                            <option value="none">Normal</option>
+                            <option value="High">High priority</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="btn-add">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Спливаюче повідомлення з китом -->
+    <div id="whale-toast" class="whale-toast">
+        <svg width="46" height="30" viewBox="0 0 180 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M25 62C25 38 48 22 80 22C112 22 132 42 146 38C154 35 162 24 168 26C172 28 164 42 158 48C166 52 174 62 170 66C165 70 152 62 144 58C134 78 110 90 78 90C46 90 25 80 25 62Z" fill="#462683"/>
+            <path d="M26 68C38 82 65 89 96 87C115 86 130 78 139 67C118 76 74 78 26 68Z" fill="#DCD6F7"/>
+            <circle cx="46" cy="54" r="4" fill="#FFFFFF"/>
+            <path d="M36 66C41 70 49 70 54 66" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <div>
+            <strong>Task added!</strong>
+            <p id="toast-message">Whale done! Saved to your list.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
